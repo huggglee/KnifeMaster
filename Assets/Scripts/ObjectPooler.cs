@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ObjectPooler : MonoBehaviour
 {
-    public static ObjectPooler Instance { get; private set; }
+    public static ObjectPooler instance { get; private set; }
 
     [System.Serializable]
     public class Pool
@@ -18,11 +18,11 @@ public class ObjectPooler : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this;
+            instance = this;
         }
-        else if (Instance != this)
+        else if (instance != this)
         {
             Destroy(gameObject);
         }

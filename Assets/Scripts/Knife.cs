@@ -29,9 +29,20 @@ public class Knife : MonoBehaviour
         //rb.constraints &= ~RigidbodyConstraints.FreezePositionY;
         //rb.useGravity = true;
         KnifeThrower.instance.setCurrentHeight();
-        Destroy(gameObject, 1.5f);
+        Debug.Log("undo" + gameObject.activeInHierarchy);
+        //Destroy(gameObject, 1.5f);
+        //ObjectPooler.instance.ReturnToPool(gameObject);
+        StartCoroutine("ReturnToPool");
     }
 
+
+    IEnumerator ReturnToPool()
+    {
+        yield return new WaitForSeconds(1.5f);
+        gameObject.transform.SetParent(ObjectPooler.instance.transform);
+        yield return null;
+        ObjectPooler.instance.ReturnToPool(gameObject);
+    }
     private void setBoost()
     {
         isBoost = false;

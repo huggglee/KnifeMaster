@@ -28,7 +28,8 @@ public class KnifeThrower : MonoBehaviour
             _currentHeight += verticalStep;
             Debug.Log(_currentHeight);
             Vector3 spawnPosition = new Vector3(tower.position.x, _currentHeight, 4);
-            _currentKnife = Instantiate(knifePrefab, spawnPosition, Quaternion.identity);
+            //_currentKnife = Instantiate(knifePrefab, spawnPosition, Quaternion.identity);
+            _currentKnife = SpawnKnife(spawnPosition, Quaternion.Euler(0f, 0f, 0f));
         }
         if (Input.GetMouseButtonDown(0))
         {
@@ -45,6 +46,11 @@ public class KnifeThrower : MonoBehaviour
     public float getCurrentHeight()
     {
         return _currentHeight;
+    }
+
+    public GameObject SpawnKnife(Vector3 position,Quaternion rotation, string tag = "Knife")
+    {
+        return ObjectPooler.instance.SpawnFromPool(tag, position, rotation);
     }
 
     public void undoKnives()

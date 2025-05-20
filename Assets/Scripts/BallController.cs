@@ -30,6 +30,7 @@ public class BallController : MonoBehaviour
             }
             else
             {
+                //gameObject.transform.localScale = new Vector3(1f, 1f, 0.3f);
                 KnifeThrower.instance.undoKnives();
                 //knife.Undo();
             }
