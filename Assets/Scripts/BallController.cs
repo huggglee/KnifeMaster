@@ -10,11 +10,29 @@ public class BallController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
     }
-    private void OnTriggerEnter(Collider other)
+
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.CompareTag("Knife"))
+        if (collision.gameObject.CompareTag("Knife"))
         {
-            rb.linearVelocity = new Vector3(0, bounceForce, 0);
+            Knife knife = collision.gameObject.GetComponent<Knife>();
+            if (knife.threw == true)
+            {
+                if (knife.isBoost)
+                {
+                    Debug.Log("Boost");
+                    rb.linearVelocity = new Vector3(0, bounceForce + knife.ForceBoost, 0);
+                }
+                else
+                {
+                    rb.linearVelocity = new Vector3(0, bounceForce, 0);
+                }
+            }
+            else
+            {
+                KnifeThrower.instance.undoKnives();
+                //knife.Undo();
+            }
         }
     }
 }

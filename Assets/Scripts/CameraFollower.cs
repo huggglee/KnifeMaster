@@ -8,13 +8,10 @@ public class CameraFollower : MonoBehaviour
 
     void Update()
     {
-        if (knifeThrower.LatestKnife == null) return;
-
-        Vector3 targetPos = knifeThrower.LatestKnife.transform.position + new Vector3(0, offsetY, -10);
+        //if (knifeThrower.LatestKnife == null) return;
+        float currentHeight = knifeThrower.getCurrentHeight();
+        Vector3 targetPos = new Vector3(gameObject.transform.position.x, currentHeight, gameObject.transform.position.z) + new Vector3(0, offsetY, -10);
         Vector3 smoothPos = Vector3.Lerp(transform.position, targetPos, followSpeed * Time.deltaTime);
-        if (smoothPos.y > transform.position.y)
-        {
-            transform.position = new Vector3(transform.position.x, smoothPos.y, transform.position.z);
-        }
+        transform.position = new Vector3(transform.position.x, smoothPos.y, transform.position.z);
     }
 }
