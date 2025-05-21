@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 public class BallController : MonoBehaviour
@@ -9,6 +9,7 @@ public class BallController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -30,10 +31,26 @@ public class BallController : MonoBehaviour
             }
             else
             {
-                //gameObject.transform.localScale = new Vector3(1f, 1f, 0.3f);
+                gameObject.transform.localScale = new Vector3(1f, 1f, 0.4f);
+                Vector3 size = collision.gameObject.GetComponent<Renderer>().bounds.extents;
+                gameObject.GetComponent<Collider>().enabled = false;
+                gameObject.transform.position = collision.transform.position - new Vector3(0f, 0f, size.z);
+                gameObject.transform.SetParent(collision.transform);
+                rb.isKinematic = true;
+
                 KnifeThrower.instance.undoKnives();
                 //knife.Undo();
             }
         }
+    }
+
+    public void RespawnBall(Vector3 position)
+    {
+        gameObject.transform.SetParent(null);
+        gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+        gameObject.transform.position = position;
+        gameObject.GetComponent<Collider>().enabled = true;
+        rb.isKinematic = false;
+
     }
 }

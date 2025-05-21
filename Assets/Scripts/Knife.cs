@@ -1,10 +1,10 @@
-using System;
+﻿using System;
 using System.Collections;
 using UnityEngine;
 
 public class Knife : MonoBehaviour
 {
-    public float throwForce = 10f;
+    public float throwForce = 15f;
     public float ForceBoost = 5f;
     public bool threw = false;
     public bool isBoost = true;

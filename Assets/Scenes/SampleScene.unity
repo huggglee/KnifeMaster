@@ -505,7 +505,7 @@ GameObject:
   - component: {fileID: 1076575992}
   - component: {fileID: 1076575993}
   m_Layer: 0
-  m_Name: Balll
+  m_Name: Ball
   m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -555,7 +555,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 45a741678038883479a1e4a0eef46687, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -594,7 +594,7 @@ Transform:
   m_GameObject: {fileID: 1076575987}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 18.05, z: 1.97}
+  m_LocalPosition: {x: 0, y: 18.05, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -806,10 +806,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   knifePrefab: {fileID: 8718456923292588507, guid: 01d42659fd008184987d78107652f203, type: 3}
+  ball: {fileID: 1076575987}
   tower: {fileID: 1167009371}
+  LatestKnife: {fileID: 0}
   verticalStep: 1
   throwForce: 10
-  LatestKnife: {fileID: 0}
 --- !u!1001 &5310424351670247110
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -844,7 +845,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4960904975397822265, guid: 01d42659fd008184987d78107652f203, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.19
+      value: 1.415
       objectReference: {fileID: 0}
     - target: {fileID: 4960904975397822265, guid: 01d42659fd008184987d78107652f203, type: 3}
       propertyPath: m_LocalRotation.w
