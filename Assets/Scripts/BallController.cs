@@ -5,6 +5,7 @@ public class BallController : MonoBehaviour
 {
     public float bounceForce = 10f;
     private Rigidbody rb;
+    private bool isBoost;
 
     void Start()
     {
@@ -21,8 +22,9 @@ public class BallController : MonoBehaviour
             {
                 if (knife.isBoost)
                 {
-                    Debug.Log("Boost");
                     rb.linearVelocity = new Vector3(0, bounceForce + knife.ForceBoost, 0);
+                    GameObject cam = GameObject.FindGameObjectWithTag("MainCamera");
+                    cam.GetComponent<CameraFollower>().zoomOut();
                 }
                 else
                 {
