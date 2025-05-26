@@ -29,7 +29,6 @@ public class Knife : MonoBehaviour
         //rb.constraints &= ~RigidbodyConstraints.FreezePositionY;
         //rb.useGravity = true;
         KnifeThrower.instance.setCurrentHeight();
-        Debug.Log("undo" + gameObject.activeInHierarchy);
         //Destroy(gameObject, 1.5f);
         //ObjectPooler.instance.ReturnToPool(gameObject);
         StartCoroutine("ReturnToPool");
@@ -47,5 +46,12 @@ public class Knife : MonoBehaviour
     {
         isBoost = false;
     }
-    
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Finish"))
+        {
+            GameManager.instance.onWin();
+        }
+    }
+
 }

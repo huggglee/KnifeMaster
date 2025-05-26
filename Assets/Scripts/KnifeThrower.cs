@@ -11,8 +11,9 @@ public class KnifeThrower : MonoBehaviour
     public Knife LatestKnife;
     public float verticalStep = 1f;
     public float throwForce = 10f;
+    public GameObject knife;
 
-    private float _currentHeight = 0f;
+    private float _currentHeight ;
     private GameObject _currentKnife;
     //private bool isLoading = false;
     private void Awake()
@@ -21,6 +22,7 @@ public class KnifeThrower : MonoBehaviour
         {
             instance = this;
         }
+        _currentHeight = knife.transform.position.y;
     }
     void Update()
     {

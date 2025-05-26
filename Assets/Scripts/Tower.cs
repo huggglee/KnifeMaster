@@ -3,15 +3,20 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject.CompareTag("Knife"))
-    //    {
-    //        //other.gameObject.GetComponent<Rigidbody>().isKinematic = true;
-    //        other.gameObject.transform.SetParent(transform);
-    //    }
-    //}
+    private Material material;
+    private void Start()
+    {
+        material = GetComponent<Renderer>().material;
+        gameObject.transform.position = new Vector3(transform.position.x, transform.localScale.y/2-0.5f, transform.position.z);
+        Vector2 tiling = new Vector2(1f, gameObject.transform.localScale.y / 12);
+        material.mainTextureScale = tiling;
+    }   
 
+
+    public void ReSpawn()
+    {
+
+    }
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Knife"))
