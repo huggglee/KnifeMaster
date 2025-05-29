@@ -46,6 +46,10 @@ public class KnifeThrower : MonoBehaviour
     {
         _currentHeight -= verticalStep;
     }
+    public void resetHeight()
+    {
+        _currentHeight = 0f;
+    }
     public float getCurrentHeight()
     {
         return _currentHeight;
@@ -88,7 +92,7 @@ public class KnifeThrower : MonoBehaviour
         _currentKnife.SetActive(true);
         //isLoading = false;
         Vector3 BallPosition = new Vector3(0f, _currentHeight + 5f, 2f);
-        ball.GetComponent<BallController>().RespawnBall(BallPosition);
+        ball.GetComponent<BallController>().Respawn(BallPosition);
 
     }
 }

@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 176669929}
   - component: {fileID: 176669928}
+  - component: {fileID: 176669930}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -165,6 +166,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &176669930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176669927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88dd8b84872a14647b2515429386aff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tower: {fileID: 1167009367}
+  finish: {fileID: 1021895160}
+  ball: {fileID: 1076575987}
+  currentLevel: 1
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -474,7 +491,7 @@ MonoBehaviour:
   pools:
   - tag: Knife
     prefab: {fileID: 8718456923292588507, guid: 01d42659fd008184987d78107652f203, type: 3}
-    size: 20
+    size: 5
 --- !u!4 &598592821
 Transform:
   m_ObjectHideFlags: 0
@@ -1007,7 +1024,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c737625b8b280004294d0c937692c85d, type: 2}
+  - {fileID: 2100000, guid: 1d4d28536d416df4cb5cf8877f1cc157, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1319,7 +1336,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 9.5, z: 0}
-  m_LocalScale: {x: 1, y: 10, z: 1}
+  m_LocalScale: {x: 1, y: 40, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1557,6 +1574,10 @@ PrefabInstance:
     - target: {fileID: 8718456923292588507, guid: 01d42659fd008184987d78107652f203, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8718456923292588507, guid: 01d42659fd008184987d78107652f203, type: 3}
+      propertyPath: m_TagString
+      value: StaticKnife
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

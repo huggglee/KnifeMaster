@@ -14,7 +14,7 @@ public class BallController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Knife"))
+        if (collision.gameObject.CompareTag("Knife") || collision.gameObject.CompareTag("StaticKnife"));
         {
             Knife knife = collision.gameObject.GetComponent<Knife>();
             if (knife.threw == true)
@@ -45,8 +45,9 @@ public class BallController : MonoBehaviour
         }
     }
 
-    public void RespawnBall(Vector3 position)
+    public void Respawn(Vector3 position)
     {
+        Debug.Log("respawnball");
         gameObject.transform.SetParent(null);
         gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
         gameObject.transform.position = position;

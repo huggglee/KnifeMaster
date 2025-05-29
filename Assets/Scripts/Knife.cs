@@ -34,6 +34,11 @@ public class Knife : MonoBehaviour
         StartCoroutine("ReturnToPool");
     }
 
+    public void UndonoForce()
+    {
+        KnifeThrower.instance.setCurrentHeight();
+        StartCoroutine("ReturnToPool");
+    }
 
     IEnumerator ReturnToPool()
     {
@@ -50,7 +55,7 @@ public class Knife : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Finish"))
         {
-            GameManager.instance.onWin();
+            LevelManager.instance.loadNextLevel();
         }
     }
 

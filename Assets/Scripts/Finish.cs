@@ -6,12 +6,16 @@ public class Finish : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        transform.position = new Vector3(transform.position.x, tower.transform.localScale.y, transform.position.z);
+        //transform.position = new Vector3(transform.position.x, tower.transform.localScale.y, transform.position.z);
     }   
 
-    // Update is called once per frame
     void Update()
     {
         
+    }
+    
+    public void Spawn(float y)
+    {
+        transform.position = new Vector3(transform.position.x, y, transform.position.z);
     }
 }

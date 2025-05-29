@@ -16,6 +16,15 @@ public class ObjectPooler : MonoBehaviour
     public List<Pool> pools;
     private Dictionary<string, Queue<GameObject>> poolDictionary;
 
+    private void Update()
+    {
+        //Debug.Log(poolDictionary.Values.Count);
+        foreach (var queue in poolDictionary.Values)
+        {
+            Debug.Log($"Queue count: {queue.Count}");
+        }
+
+    }
     private void Awake()
     {
         if (instance == null)
@@ -74,5 +83,18 @@ public class ObjectPooler : MonoBehaviour
     public void ReturnToPool(GameObject obj)
     {
         obj.SetActive(false);
+    }
+
+    public void ReturnAllToPool()
+    {
+        foreach (var queue in poolDictionary.Values)
+        {
+            foreach (GameObject obj in queue)
+            {
+                obj.transform.SetParent(this.transform);
+                ReturnToPool(obj);
+            }
+        }
+
     }
 }

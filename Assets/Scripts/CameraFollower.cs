@@ -31,14 +31,6 @@ public class CameraFollower : MonoBehaviour
         Vector3 targetPos = new Vector3(gameObject.transform.position.x, currentHeight, gameObject.transform.position.z) + new Vector3(0, offsetY, -10);
         Vector3 smoothPos = Vector3.Lerp(transform.position, targetPos, followSpeed * Time.deltaTime);
         transform.position = new Vector3(transform.position.x, smoothPos.y, transform.position.z);
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            zoomOut();
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            zoomIn();
-        }
     }
 
     public void zoomIn()

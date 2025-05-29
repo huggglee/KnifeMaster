@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         state = gameState.Playing;
+        LevelManager.instance.loadLevel();
     }
 
     // Update is called once per frame
@@ -44,7 +45,6 @@ public class GameManager : MonoBehaviour
             setState(gameState.Lose);
         }
     }
-
 
     public void setState(gameState gamestate)
     {
