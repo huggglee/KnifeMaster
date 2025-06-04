@@ -2,72 +2,83 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class LevelManager : MonoBehaviour
 {
-    public static LevelManager instance;
+    public static LevelManager Instance;
 
-    private string levelPath = "Levels";
+    [Header("Scripts")]
+    [SerializeField] Tower towerScript;
+    [SerializeField] Finish finishScript;
+    [SerializeField] BallController ballScript;
+    public int currentLevel = 1;
+    public UnityAction DataLoaded;
     public Dictionary<int, LevelData> levelDatas = new Dictionary<int, LevelData>();
 
-    [SerializeField] GameObject tower;
-    private Tower towerScript;
-
-    [SerializeField] GameObject finish;
-    private Finish finishScript;
-
-    [SerializeField] GameObject ball;
-    private BallController ballScript;
-
+    private string levelPath = "Levels";
     private GameObject[] knifes;
-
-    public int currentLevel = 1;
-    
-
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
     }
     void Start()
     {
-        
-        towerScript = tower.GetComponent<Tower>();
-        finishScript = finish.GetComponent<Finish>();
-        ballScript = ball.GetComponent<BallController>();
-        loadData();
-        //Invoke("loadNextLevel", 4f);
+        LoadData();
+        //Invoke("LoadNextLevel", 4f);
+        LoadCurrentLevel();
     }
 
-    public void loadData()
+    public void LoadData()
     {
         List<LevelData> leveldatas = Resources.LoadAll<LevelData>(levelPath).ToList();
         levelDatas = leveldatas.ToDictionary(i => i.level);
-        //Debug.Log(levelDatas.Count);
+        //DataLoaded.Invoke();
     }
 
-    public void loadLevel()
+    public void LoadLevel(int level)
     {
-        towerScript.Spawn(levelDatas[currentLevel].towerHeight);
-        finishScript.Spawn(levelDatas[currentLevel].towerHeight);
+        GameManager.Instance.StartCoroutine(GameManager.Instance.SetState(GameManager.gameState.onLoad, 0.2f));
+        //Debug.Log(levelDatas[level].timer);
+        KnifeThrower.Instance._currentKnife = null;
+        //KnifeThrower.Instance.ResetHeight();
+        if (!levelDatas.ContainsKey(level))
+        {
+            Debug.LogError($"Level {level} not found in levelDatas dictionary.");
+            return;
+        }
         knifes = GameObject.FindGameObjectsWithTag("Knife");
         foreach (GameObject knife in knifes)
         {
             Knife knifeScript = knife.GetComponent<Knife>();
-            knifeScript.UndonoForce();
+            knifeScript.UndoNoForce();
         }
-        KnifeThrower.instance.resetHeight();
-        //ObjectPooler.instance.ReturnAllToPool();
-        //ballScript.Respawn(new Vector3(ball.transform.position.x, 5f, ball.transform.position.z));
-        //ballScript.Respawn(new Vector3(0f, 5f, 2f));
+        towerScript.Spawn(levelDatas[level].towerHeight);
+        finishScript.Spawn( levelDatas[level].towerHeight);
+        if (ballScript != null)
+        {
+        }
+        else
+        {
+            Debug.LogError("ballScript is null. Please assign it in the inspector or initialize it in the code.");
+        }
+        GameManager.Instance.time = levelDatas[level].timer;
+        Debug.Log(GameManager.Instance.time);
+
+    }
+    public void LoadCurrentLevel()
+    {
+        LoadLevel(currentLevel);
     }
 
-    public void loadNextLevel()
+    public void LoadNextLevel()
     {
         currentLevel += 1;
-        loadLevel();
+        LoadCurrentLevel();
+        ballScript.Respawn(new Vector3(0f, 8f, 2f));
     }
 
     void Update()

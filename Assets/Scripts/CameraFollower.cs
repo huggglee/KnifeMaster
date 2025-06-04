@@ -2,8 +2,17 @@ using UnityEngine;
 
 public class CameraFollower : MonoBehaviour
 {
+    private Vector3 startPos = new Vector3(15f, 7f, 0f);
+    private Vector3 playPos = new Vector3(9f, 5f, 11f);
+    private Vector3 targetPos;
+
+    private Vector3 startEuler = new Vector3(0f, -90f, 0f); 
+    private Vector3 playEuler = new Vector3(0f, -140f, 0f);    
+    private Quaternion startRot;
+    private Quaternion playRot;
+    private Quaternion targetRot;
+
     public KnifeThrower knifeThrower;
-    public float offsetY = 5f;
     public float followSpeed = 5f;
     public float zoomSpeed = 3f;
     public float minFOV = 60f;
@@ -18,6 +27,9 @@ public class CameraFollower : MonoBehaviour
         {
             targetFOV = cam.fieldOfView;
         }
+
+        startRot = Quaternion.Euler(startEuler);
+        playRot = Quaternion.Euler(playEuler);
     }
     void Update()
     {
@@ -26,21 +38,29 @@ public class CameraFollower : MonoBehaviour
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, targetFOV, zoomSpeed * Time.deltaTime);
         }
 
-        //if (knifeThrower.LatestKnife == null) return;
-        float currentHeight = knifeThrower.getCurrentHeight();
-        Vector3 targetPos = new Vector3(gameObject.transform.position.x, currentHeight, gameObject.transform.position.z) + new Vector3(0, offsetY, -10);
-        Vector3 smoothPos = Vector3.Lerp(transform.position, targetPos, followSpeed * Time.deltaTime);
-        transform.position = new Vector3(transform.position.x, smoothPos.y, transform.position.z);
+        if (GameManager.Instance.state == GameManager.gameState.onLoad)
+        {
+            targetPos = startPos;
+            targetRot = startRot;
+        }
+        else if (GameManager.Instance.state == GameManager.gameState.Playing || GameManager.Instance.state == GameManager.gameState.Waiting)
+        {
+            float currentHeight = knifeThrower.GetCurrentHeight();
+            targetPos = playPos+ new Vector3(0f, currentHeight,0f);
+            targetRot = playRot;
+        }
+        transform.position = Vector3.Lerp(transform.position, targetPos, followSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, followSpeed * Time.deltaTime);
     }
 
-    public void zoomIn()
+    public void ZoomIn()
     {
         targetFOV = minFOV;
     }
 
-    public void zoomOut()
+    public void ZoomOut()
     {
         targetFOV = maxFOV;
-        Invoke("zoomIn", 2f);
+        Invoke("ZoomIn", 2f);
     }
 }

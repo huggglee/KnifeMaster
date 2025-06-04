@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class Ui : MonoBehaviour
+public class TimerDisplay : MonoBehaviour
 {
     public float time;
     private TextMeshProUGUI timeText;
@@ -15,7 +15,7 @@ public class Ui : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        time = GameManager.instance.time;
+        time = GameManager.Instance.time;
         timeText.SetText(time.ToString("F2"));
         //if(GameManager.instance.state == GameManager.gameState.Playing)
         //{

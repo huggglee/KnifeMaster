@@ -14,7 +14,7 @@ public class BallController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Knife") || collision.gameObject.CompareTag("StaticKnife"));
+        if (collision.gameObject.CompareTag("Knife") || collision.gameObject.CompareTag("StaticKnife"))
         {
             Knife knife = collision.gameObject.GetComponent<Knife>();
             if (knife.threw == true)
@@ -23,7 +23,7 @@ public class BallController : MonoBehaviour
                 {
                     rb.linearVelocity = new Vector3(0, bounceForce + knife.ForceBoost, 0);
                     GameObject cam = GameObject.FindGameObjectWithTag("MainCamera");
-                    cam.GetComponent<CameraFollower>().zoomOut();
+                    cam.GetComponent<CameraFollower>().ZoomOut();
                 }
                 else
                 {
@@ -39,7 +39,7 @@ public class BallController : MonoBehaviour
                 gameObject.transform.SetParent(collision.transform);
                 rb.isKinematic = true;
 
-                KnifeThrower.instance.undoKnives();
+                KnifeThrower.Instance.UndoKnives();
                 //knife.Undo();
             }
         }
@@ -47,12 +47,10 @@ public class BallController : MonoBehaviour
 
     public void Respawn(Vector3 position)
     {
-        Debug.Log("respawnball");
         gameObject.transform.SetParent(null);
         gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
         gameObject.transform.position = position;
         gameObject.GetComponent<Collider>().enabled = true;
         rb.isKinematic = false;
-
     }
 }
