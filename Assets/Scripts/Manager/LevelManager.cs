@@ -12,7 +12,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] Tower towerScript;
     [SerializeField] Finish finishScript;
     [SerializeField] BallController ballScript;
-    public int currentLevel = 1;
+    public int currentLevel;
     public UnityAction DataLoaded;
     public Dictionary<int, LevelData> levelDatas = new Dictionary<int, LevelData>();
 
@@ -27,6 +27,7 @@ public class LevelManager : MonoBehaviour
     }
     void Start()
     {
+        currentLevel = Data.Instance.GetCurrentLevel();
         LoadData();
         //Invoke("LoadNextLevel", 4f);
         LoadCurrentLevel();
@@ -66,7 +67,7 @@ public class LevelManager : MonoBehaviour
             Debug.LogError("ballScript is null. Please assign it in the inspector or initialize it in the code.");
         }
         GameManager.Instance.time = levelDatas[level].timer;
-        Debug.Log(GameManager.Instance.time);
+        //Debug.Log(GameManager.Instance.time);
 
     }
     public void LoadCurrentLevel()
@@ -76,6 +77,7 @@ public class LevelManager : MonoBehaviour
 
     public void LoadNextLevel()
     {
+        Data.Instance.SetLevel(currentLevel);
         currentLevel += 1;
         LoadCurrentLevel();
         ballScript.Respawn(new Vector3(0f, 8f, 2f));

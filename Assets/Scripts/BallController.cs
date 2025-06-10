@@ -21,7 +21,7 @@ public class BallController : MonoBehaviour
             {
                 if (knife.isBoost)
                 {
-                    rb.linearVelocity = new Vector3(0, bounceForce + knife.ForceBoost, 0);
+                    rb.linearVelocity = new Vector3(0, bounceForce + knife.GetForceBoost(), 0);
                     GameObject cam = GameObject.FindGameObjectWithTag("MainCamera");
                     cam.GetComponent<CameraFollower>().ZoomOut();
                 }

@@ -1,24 +1,27 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public enum gameState { Playing,Pause,Win,Lose,onLoad,Waiting};
+    public enum gameState { Playing, Pause, Win, Lose, onLoad, Waiting };
     public gameState state;
     public float time;
 
+    private int coin;
+
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
         }
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         state = gameState.onLoad;
+
         //if(LevelManager.Instance != null)
         //{
         //    LevelManager.Instance.DataLoaded += () =>
@@ -30,21 +33,24 @@ public class GameManager : MonoBehaviour
         //Invoke("SetPause",3f);
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        //Debug.Log(time);
-        //Debug.Log(state);
+        coin = Data.Instance.GetCoins();
         if (state == gameState.onLoad)
         {
             ScreenManager.Instance.InactiveScreen("TimerPanel");
             if (Input.GetMouseButtonDown(0))
             {
-                StartCoroutine(SetState(gameState.Playing,0.3f));
-                ScreenManager.Instance.InactiveScreen("StartPanel");
+                if (!EventSystem.current.IsPointerOverGameObject())
+                {
+                    Debug.Log("Start Game");
+                    StartCoroutine(SetState(gameState.Playing, 0.3f));
+                    ScreenManager.Instance.InactiveScreen("StartPanel");
+                }
             }
         }
-        else if (state == gameState.Playing )
+        else if (state == gameState.Playing)
         {
             ScreenManager.Instance.ActiveScreen("TimerPanel");
             Time.timeScale = 1f;
@@ -54,7 +60,7 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 0f;
         }
-        else if(state == gameState.Win)
+        else if (state == gameState.Win)
         {
             OnWin();
         }
@@ -65,19 +71,15 @@ public class GameManager : MonoBehaviour
 
         if (time < 0)
         {
-            StartCoroutine(SetState(gameState.Lose,0f));
+            StartCoroutine(SetState(gameState.Lose, 0f));
             time = 0f;
         }
     }
 
-    public IEnumerator SetState(gameState gamestate,float time)
+    public IEnumerator SetState(gameState gamestate, float time)
     {
         yield return new WaitForSeconds(time);
         state = gamestate;
-    }
-    public void SetPause()
-    {
-        state = gameState.Playing;
     }
     public void OnWin()
     {
@@ -91,4 +93,10 @@ public class GameManager : MonoBehaviour
         ScreenManager.Instance.ActiveScreen("LosePanel");
         StartCoroutine(SetState(gameState.Waiting, 0f));
     }
+
+    public int GetCoin()
+    {
+        return coin;
+    }
+
 }

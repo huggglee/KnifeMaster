@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class Knife : MonoBehaviour
 {
-    public float throwForce = 15f;
-    public float ForceBoost = 5f;
+    private float throwForce = 15f;
+    private float forceBoost = 5f;
+    private float timeBoost = 0.5f;
     public bool threw = false;
     public bool isBoost = true;
-    public float timeBoost = 0.5f;
 
     private Rigidbody rb;
     private GameObject[] knifes;
 
     private void Start()
     {
+        int levelKnifeSpeed = Data.Instance.GetLevelBoost("K_Knife_Speed");
+        int levelEasyFever = Data.Instance.GetLevelBoost("K_Easy_Fever");
+        int levelFeverBounce = Data.Instance.GetLevelBoost("K_Fever_Bounce");
+        throwForce += levelKnifeSpeed * 0.1f;
+        timeBoost += levelEasyFever * 0.1f;
+        forceBoost += levelFeverBounce * 0.1f;
         rb = GetComponent<Rigidbody>();
         rb.AddTorque(Vector3.forward * 3f);
 
@@ -22,7 +28,7 @@ public class Knife : MonoBehaviour
     public void Throw()
     {
         rb.constraints |= RigidbodyConstraints.FreezeRotation;
-        transform.rotation= Quaternion.Euler(Vector3.zero);
+        transform.rotation = Quaternion.Euler(Vector3.zero);
         rb.linearVelocity = Vector3.back * throwForce;
         Invoke("SetBoost", timeBoost);
     }
@@ -45,13 +51,16 @@ public class Knife : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         gameObject.transform.SetParent(ObjectPooler.instance.transform);
-        //yield return null;    
         ObjectPooler.instance.ReturnToPool(gameObject);
         rb.linearVelocity = Vector3.zero;
     }
     private void SetBoost()
     {
         isBoost = false;
+    }
+    public float GetForceBoost()
+    {
+        return forceBoost;
     }
     //private void OnCollisionEnter(Collision collision)
     //{

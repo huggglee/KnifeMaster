@@ -27,7 +27,7 @@ public class ScreenManager : MonoBehaviour
         for (int i = 0; i < childlCount; i++)
         {
             childs[i] = screenParent.GetChild(i).gameObject;
-            Debug.Log("Panel " + i + ": " + childs[i].name);
+            //Debug.Log("Panel " + i + ": " + childs[i].name);
             ScreenController sc = childs[i].GetComponent<ScreenController>();
             screenDatas[sc.key] = childs[i];
         }
