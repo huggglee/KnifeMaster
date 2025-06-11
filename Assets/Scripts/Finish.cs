@@ -23,9 +23,9 @@ public class Finish : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Knife"))
         {
+            GameManager.Instance.StartCoroutine(GameManager.Instance.SetState(GameManager.gameState.Win, 0f));
             collision.gameObject.GetComponent<Knife>().threw = true;
             collision.gameObject.transform.SetParent(tower.transform);
-            GameManager.Instance.StartCoroutine(GameManager.Instance.SetState(GameManager.gameState.Win, 0.3f));
             //LevelManager.Instance.LoadNextLevel();
         }
     }

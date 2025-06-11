@@ -4,9 +4,6 @@ using UnityEngine;
 public class Tower : MonoBehaviour
 {
     private Material material;
-    private void Start()
-    {
-    }   
 
     public void Spawn(float height)
     {

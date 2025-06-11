@@ -17,13 +17,21 @@ public class BoostButton : MonoBehaviour
     {
         btn = GetComponent<Button>();
         btn.onClick.AddListener(() => LevelUp(key));
+        SetData();
+        Data.Instance.RegisterOnChange(SetData);    
     }
-
-    // Update is called once per frame
-    void Update()
+    void LevelUp(string key)
+    {
+        if (coin >= currentPrice)
+        {
+            Data.Instance.SetCoins(-currentPrice);
+            Data.Instance.SetLevelBoost(key, currentLevel + 1);
+        }
+    }
+    void SetData()
     {
         currentLevel = Data.Instance.GetLevelBoost(key);
-        coin = GameManager.Instance.GetCoin();
+        coin = Data.Instance.GetCoins();
         currentPrice = price * currentLevel;
         if (coin >= currentPrice)
         {
@@ -32,15 +40,5 @@ public class BoostButton : MonoBehaviour
         else coinText.color = Color.red;
         coinText.SetText(currentPrice.ToString());
         levelText.SetText("Level " + currentLevel.ToString());
-    }
-
-    void LevelUp(string key)
-    {
-        if (coin >= currentPrice)
-        {
-            Data.Instance.SetLevelBoost(key, currentLevel + 1);
-            Data.Instance.SetCoins(-currentPrice);
-        }
-
     }
 }

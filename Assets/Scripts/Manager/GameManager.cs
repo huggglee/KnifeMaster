@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
@@ -8,8 +9,7 @@ public class GameManager : MonoBehaviour
     public enum gameState { Playing, Pause, Win, Lose, onLoad, Waiting };
     public gameState state;
     public float time;
-
-    private int coin;
+    public UnityAction onWin;
 
     private void Awake()
     {
@@ -20,72 +20,83 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
+        Data.Instance.SetCoins(1000);
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0;
         state = gameState.onLoad;
-
-        //if(LevelManager.Instance != null)
+        //if (LevelManager.Instance != null)
         //{
-        //    LevelManager.Instance.DataLoaded += () =>
-        //    {
-        //        Debug.Log("DataLoaded");
-        //    };
+        //    LevelManager.Instance.DataLoaded += LevelManager.Instance.LoadCurrentLevel;
         //}
-        //LevelManager.instance.loadLevel();
-        //Invoke("SetPause",3f);
     }
-
 
     void Update()
     {
-        coin = Data.Instance.GetCoins();
+        Debug.Log(state);
         if (state == gameState.onLoad)
         {
-            ScreenManager.Instance.InactiveScreen("TimerPanel");
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
             {
-                if (!EventSystem.current.IsPointerOverGameObject())
-                {
-                    Debug.Log("Start Game");
-                    StartCoroutine(SetState(gameState.Playing, 0.3f));
-                    ScreenManager.Instance.InactiveScreen("StartPanel");
-                }
+                Debug.Log("Start Game");
+                StartCoroutine(SetState(gameState.Playing, 0.3f));
+                ScreenManager.Instance.InactiveScreen("StartPanel");
             }
         }
-        else if (state == gameState.Playing)
+
+        if (state == gameState.Playing)
         {
-            ScreenManager.Instance.ActiveScreen("TimerPanel");
-            Time.timeScale = 1f;
             time -= Time.deltaTime;
-        }
-        else if (state == gameState.Pause)
-        {
-            Time.timeScale = 0f;
-        }
-        else if (state == gameState.Win)
-        {
-            OnWin();
-        }
-        else if (state == gameState.Lose)
-        {
-            OnLose();
-        };
 
-        if (time < 0)
-        {
-            StartCoroutine(SetState(gameState.Lose, 0f));
-            time = 0f;
+            if (time <= 0)
+            {
+                time = 0;
+                StartCoroutine(SetState(gameState.Lose, 0f));
+            }
         }
     }
 
-    public IEnumerator SetState(gameState gamestate, float time)
+    public IEnumerator SetState(gameState newState, float delay)
     {
-        yield return new WaitForSeconds(time);
-        state = gamestate;
+        yield return new WaitForSeconds(delay);
+        state = newState;
+
+        switch (state)
+        {
+            case gameState.Playing:
+                Time.timeScale = 1f;
+                ScreenManager.Instance.ActiveScreen("TimerPanel");
+                break;
+
+            case gameState.Pause:
+                Time.timeScale = 0f;
+                break;
+
+            case gameState.Win:
+                OnWin();
+                break;
+
+            case gameState.Lose:
+                OnLose();
+                break;
+
+            case gameState.onLoad:
+                Time.timeScale = 1f;
+                ScreenManager.Instance.InactiveScreen("TimerPanel");
+                ScreenManager.Instance.ActiveScreen("StartPanel");
+                break;
+
+            //case gameState.Waiting:
+            //    Time.timeScale = 0f;
+            //    break;
+        }
     }
+
     public void OnWin()
     {
+        StartCoroutine(SetState(gameState.Waiting, 0f));
+        Data.Instance.SetCoins(100);
         ScreenManager.Instance.ActiveScreen("BlurPanel");
         ScreenManager.Instance.ActiveScreen("WinPanel");
-        StartCoroutine(SetState(gameState.Waiting, 0f));
     }
     public void OnLose()
     {
@@ -94,9 +105,35 @@ public class GameManager : MonoBehaviour
         StartCoroutine(SetState(gameState.Waiting, 0f));
     }
 
-    public int GetCoin()
+
+    public void OnCloseMenu()
     {
-        return coin;
+        //ScreenManager.Instance.InactiveScreen("MenuPanel");
+        if (state == gameState.Pause)
+        {
+            SetPlaying();
+        }
     }
 
+    public void OnOpenMenu()
+    {
+        if(state == gameState.Playing)
+        {
+            SetPause();
+        }
+    }
+
+    public void SetPlaying()
+    {
+        StartCoroutine(SetState(gameState.Playing, 0f));
+    }
+
+    public void SetPause()
+    {
+        StartCoroutine(SetState(gameState.Pause, 0f));
+    }
+    public void SetOnLoad()
+    {
+        StartCoroutine(SetState(gameState.onLoad, 0f));
+    }
 }

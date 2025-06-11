@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class KnifeThrower : MonoBehaviour
 {
@@ -36,7 +37,7 @@ public class KnifeThrower : MonoBehaviour
         }
         if (GameManager.Instance.state == GameManager.gameState.Playing && isLoading == false)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 _currentKnife.GetComponent<Knife>().Throw();
                 LatestKnife = _currentKnife.GetComponent<Knife>();

@@ -27,17 +27,18 @@ public class LevelManager : MonoBehaviour
     }
     void Start()
     {
+        DataLoaded += LoadCurrentLevel;
         currentLevel = Data.Instance.GetCurrentLevel();
         LoadData();
-        //Invoke("LoadNextLevel", 4f);
-        LoadCurrentLevel();
+        //LoadCurrentLevel();
     }
 
     public void LoadData()
     {
         List<LevelData> leveldatas = Resources.LoadAll<LevelData>(levelPath).ToList();
         levelDatas = leveldatas.ToDictionary(i => i.level);
-        //DataLoaded.Invoke();
+        Debug.Log("loaddata");
+        DataLoaded?.Invoke();
     }
 
     public void LoadLevel(int level)
@@ -61,6 +62,7 @@ public class LevelManager : MonoBehaviour
         finishScript.Spawn( levelDatas[level].towerHeight);
         if (ballScript != null)
         {
+            ballScript.Respawn(new Vector3(0f, 5f, 2f));
         }
         else
         {
@@ -72,15 +74,15 @@ public class LevelManager : MonoBehaviour
     }
     public void LoadCurrentLevel()
     {
+        Debug.Log("Load level" + currentLevel);
         LoadLevel(currentLevel);
     }
 
     public void LoadNextLevel()
     {
-        Data.Instance.SetLevel(currentLevel);
         currentLevel += 1;
+        Data.Instance.SetLevel(currentLevel);   
         LoadCurrentLevel();
-        ballScript.Respawn(new Vector3(0f, 8f, 2f));
     }
 
     void Update()

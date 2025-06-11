@@ -51,6 +51,6 @@ public class BallController : MonoBehaviour
         gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
         gameObject.transform.position = position;
         gameObject.GetComponent<Collider>().enabled = true;
-        rb.isKinematic = false;
+        GetComponent<Rigidbody>().isKinematic = false;
     }
 }
