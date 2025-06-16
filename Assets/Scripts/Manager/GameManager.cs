@@ -93,16 +93,19 @@ public class GameManager : MonoBehaviour
 
     public void OnWin()
     {
-        StartCoroutine(SetState(gameState.Waiting, 0f));
+        onWin?.Invoke();
+        StartCoroutine(SetState(gameState.Waiting, 0.2f));
         Data.Instance.SetCoins(100);
-        ScreenManager.Instance.ActiveScreen("BlurPanel");
-        ScreenManager.Instance.ActiveScreen("WinPanel");
+        StartCoroutine(ScreenManager.Instance.ActiveScreen("BlurPanel", 1f));
+        StartCoroutine(ScreenManager.Instance.ActiveScreen("WinPanel", 1f));
+        //ScreenManager.Instance.ActiveScreen("BlurPanel",0.2f);
+        //ScreenManager.Instance.ActiveScreen("WinPanel",0.2f);
     }
     public void OnLose()
     {
+        StartCoroutine(SetState(gameState.Waiting, 0f));
         ScreenManager.Instance.ActiveScreen("BlurPanel");
         ScreenManager.Instance.ActiveScreen("LosePanel");
-        StartCoroutine(SetState(gameState.Waiting, 0f));
     }
 
 
@@ -135,5 +138,10 @@ public class GameManager : MonoBehaviour
     public void SetOnLoad()
     {
         StartCoroutine(SetState(gameState.onLoad, 0f));
+    }
+
+    public void RegisterOnWin(UnityAction callback)
+    {
+        onWin += callback;
     }
 }

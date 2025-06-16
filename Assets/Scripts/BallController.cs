@@ -47,6 +47,7 @@ public class BallController : MonoBehaviour
 
     public void Respawn(Vector3 position)
     {
+        gameObject.SetActive(true);
         gameObject.transform.SetParent(null);
         gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
         gameObject.transform.position = position;

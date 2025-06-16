@@ -25,6 +25,10 @@ public class KnifeThrower : MonoBehaviour
         }
         _currentHeight = knife.transform.position.y;
     }
+    private void Start()
+    {
+        GameManager.Instance.RegisterOnWin(OnWin);
+    }
     void Update()
     {
         //Debug.Log(_currentHeight);
@@ -43,7 +47,15 @@ public class KnifeThrower : MonoBehaviour
                 LatestKnife = _currentKnife.GetComponent<Knife>();
                 _currentKnife = null;
             }
-        }
+        } 
+    }
+
+    public void OnWin()
+    {
+        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
+        ball.SetActive(false);
+        _currentKnife.GetComponent<Knife>().ThrowToTarget();
+        LatestKnife = _currentKnife.GetComponent<Knife>();
     }
 
     public void SetCurrentHeight()

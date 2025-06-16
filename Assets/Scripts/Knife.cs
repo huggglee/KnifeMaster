@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -61,6 +62,13 @@ public class Knife : MonoBehaviour
     public float GetForceBoost()
     {
         return forceBoost;
+    }
+
+    public void ThrowToTarget()
+    {
+        Sequence seq = DOTween.Sequence();
+        seq.Append(transform.DOMoveZ(transform.position.z + 0.1f, 0.1f).SetEase(Ease.InOutCubic));
+        seq.Append(transform.DOMoveZ(1f, 0.3f).SetEase(Ease.InQuad));
     }
     //private void OnCollisionEnter(Collision collision)
     //{

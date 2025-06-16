@@ -26,7 +26,6 @@ public class Finish : MonoBehaviour
             GameManager.Instance.StartCoroutine(GameManager.Instance.SetState(GameManager.gameState.Win, 0f));
             collision.gameObject.GetComponent<Knife>().threw = true;
             collision.gameObject.transform.SetParent(tower.transform);
-            //LevelManager.Instance.LoadNextLevel();
         }
     }
 }

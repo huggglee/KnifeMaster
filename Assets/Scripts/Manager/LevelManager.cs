@@ -12,6 +12,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] Tower towerScript;
     [SerializeField] Finish finishScript;
     [SerializeField] BallController ballScript;
+    [SerializeField] Target targetScript;
     public int currentLevel;
     public UnityAction DataLoaded;
     public Dictionary<int, LevelData> levelDatas = new Dictionary<int, LevelData>();
@@ -59,7 +60,8 @@ public class LevelManager : MonoBehaviour
             knifeScript.UndoNoForce();
         }
         towerScript.Spawn(levelDatas[level].towerHeight);
-        finishScript.Spawn( levelDatas[level].towerHeight);
+        finishScript.Spawn(levelDatas[level].towerHeight);
+        targetScript.Spawn(levelDatas[level].towerHeight + 0.5f);
         if (ballScript != null)
         {
             ballScript.Respawn(new Vector3(0f, 5f, 2f));

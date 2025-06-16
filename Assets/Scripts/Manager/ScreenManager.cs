@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,8 +39,19 @@ public class ScreenManager : MonoBehaviour
         screenDatas[key].GetComponent<ScreenController>().Active();
     }
 
+    public IEnumerator ActiveScreen(string key, float time)
+    {
+        yield return new WaitForSeconds(time);
+        screenDatas[key].GetComponent<ScreenController>().Active();
+    }
+
     public void InactiveScreen(string key)
     {
+        screenDatas[key].GetComponent<ScreenController>().Inactive();
+    }
+    public IEnumerator InactiveScreen(string key, float time)
+    {
+        yield return new WaitForSeconds(time);
         screenDatas[key].GetComponent<ScreenController>().Inactive();
     }
 }
