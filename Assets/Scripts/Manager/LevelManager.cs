@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 public class LevelManager : MonoBehaviour
 {
@@ -13,10 +14,10 @@ public class LevelManager : MonoBehaviour
     [SerializeField] Finish finishScript;
     [SerializeField] BallController ballScript;
     [SerializeField] Target targetScript;
-    public int currentLevel;
     public UnityAction DataLoaded;
     public Dictionary<int, LevelData> levelDatas = new Dictionary<int, LevelData>();
 
+    private int currentLevel;
     private string levelPath = "Levels";
     private GameObject[] knifes;
     private void Awake()
@@ -62,6 +63,14 @@ public class LevelManager : MonoBehaviour
         towerScript.Spawn(levelDatas[level].towerHeight);
         finishScript.Spawn(levelDatas[level].towerHeight);
         targetScript.Spawn(levelDatas[level].towerHeight + 0.5f);
+        //int count = levelDatas[level].obstacle;
+        //for (int i = 0; i < count; i++)
+        //{
+        //    int value = Random.Range(5, levelDatas[level].towerHeight);
+        //    Vector3 spawnPos = new Vector3(2, value, 0.55f);
+        //    ObjectPooler.Instance.SpawnFromPool("Obstacle", spawnPos, Quaternion.Euler(0f, 0f, 0f));
+        //}
+        ObstacleManager.Instance.Spawn(levelDatas[level].spawnPosObstacle);
         if (ballScript != null)
         {
             ballScript.Respawn(new Vector3(0f, 5f, 2f));
@@ -83,12 +92,12 @@ public class LevelManager : MonoBehaviour
     public void LoadNextLevel()
     {
         currentLevel += 1;
-        Data.Instance.SetLevel(currentLevel);   
+        Data.Instance.SetLevel(currentLevel);
         LoadCurrentLevel();
     }
 
     void Update()
     {
-        
+
     }
 }

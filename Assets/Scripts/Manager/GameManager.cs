@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(state);
+        //Debug.Log(state);
         if (state == gameState.onLoad)
         {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
     {
         onWin?.Invoke();
         StartCoroutine(SetState(gameState.Waiting, 0.2f));
-        Data.Instance.SetCoins(100);
+        Data.Instance.SetCoins(100+Data.Instance.GetCurrentLevel()*10);
         StartCoroutine(ScreenManager.Instance.ActiveScreen("BlurPanel", 1f));
         StartCoroutine(ScreenManager.Instance.ActiveScreen("WinPanel", 1f));
         //ScreenManager.Instance.ActiveScreen("BlurPanel",0.2f);

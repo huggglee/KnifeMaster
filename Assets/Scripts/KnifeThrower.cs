@@ -1,5 +1,7 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class KnifeThrower : MonoBehaviour
@@ -13,9 +15,10 @@ public class KnifeThrower : MonoBehaviour
     public float verticalStep = 1f;
     public float throwForce = 10f;
     public GameObject knife;
+    public GameObject _currentKnife;
+    public UnityAction OnChangeHeight;
 
     private float _currentHeight;
-    public GameObject _currentKnife;
     private bool isLoading = false;
     private void Awake()
     {
@@ -34,46 +37,58 @@ public class KnifeThrower : MonoBehaviour
         //Debug.Log(_currentHeight);
         if (_currentKnife == null)
         {
-            _currentHeight += verticalStep;
+            SetCurrentHeight(verticalStep);
+            //_currentHeight += verticalStep;
             Vector3 spawnPosition = new Vector3(tower.position.x, _currentHeight, 4);
             //_currentKnife = Instantiate(knifePrefab, spawnPosition, Quaternion.identity);
             _currentKnife = SpawnKnife(spawnPosition, Quaternion.Euler(0f, 0f, 0f));
         }
         if (GameManager.Instance.state == GameManager.gameState.Playing && isLoading == false)
         {
-            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+            if (_currentKnife.transform.position.y <= tower.transform.localScale.y)
             {
-                _currentKnife.GetComponent<Knife>().Throw();
-                LatestKnife = _currentKnife.GetComponent<Knife>();
-                _currentKnife = null;
+
+                if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+                {
+                    if (_currentKnife.transform.position.y == tower.transform.localScale.y)
+                    {
+                        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
+                        ball.SetActive(false);
+                    }
+                    _currentKnife.GetComponent<Knife>().Throw();
+                    SoundManager.Instance.PlaySound2D("Throw");
+                    LatestKnife = _currentKnife.GetComponent<Knife>();
+                    _currentKnife = null;
+                }
             }
-        } 
+        }
     }
 
     public void OnWin()
     {
-        GameObject ball = GameObject.FindGameObjectWithTag("Ball");
-        ball.SetActive(false);
         _currentKnife.GetComponent<Knife>().ThrowToTarget();
         LatestKnife = _currentKnife.GetComponent<Knife>();
     }
 
-    public void SetCurrentHeight()
+    public void SetCurrentHeight(float step)
     {
-        _currentHeight -= verticalStep;
+        _currentHeight += step;
+        //OnChangeHeight?.Invoke();
     }
-    public void ResetHeight()
-    {
-        _currentHeight = 0f;
-    }
+
     public float GetCurrentHeight()
     {
         return _currentHeight;
     }
 
+    public void RegisterOnChangeHeight(UnityAction callback)
+    {
+        OnChangeHeight += callback;
+    }
+
     public GameObject SpawnKnife(Vector3 position, Quaternion rotation, string tag = "Knife")
     {
-        return ObjectPooler.instance.SpawnFromPool(tag, position, rotation);
+        return ObjectPooler.Instance.SpawnFromPool(tag, position, rotation);
     }
 
     public void UndoKnives()

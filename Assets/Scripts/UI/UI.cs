@@ -13,7 +13,7 @@ public class UI : MonoBehaviour
         Data.Instance.RegisterOnChange(SetLevelText);
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         

@@ -1,9 +1,9 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectPooler : MonoBehaviour
 {
-    public static ObjectPooler instance { get; private set; }
+    public static ObjectPooler Instance { get; private set; }
 
     [System.Serializable]
     public class Pool
@@ -16,22 +16,13 @@ public class ObjectPooler : MonoBehaviour
     public List<Pool> pools;
     private Dictionary<string, Queue<GameObject>> poolDictionary;
 
-    private void Update()
-    {
-        //Debug.Log(poolDictionary.Values.Count);
-        //foreach (var queue in poolDictionary.Values)
-        //{
-        //    Debug.Log($"Queue count: {queue.Count}");
-        //}
-
-    }
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
-        else if (instance != this)
+        else if (Instance != this)
         {
             Destroy(gameObject);
         }
@@ -59,26 +50,31 @@ public class ObjectPooler : MonoBehaviour
             return null;
         }
 
-        GameObject objectToSpawn = poolDictionary[tag].Dequeue();
-        if (!objectToSpawn.activeInHierarchy)
+        Queue<GameObject> poolQueue = poolDictionary[tag];
+
+        foreach (GameObject obj in poolQueue)
         {
-            objectToSpawn.SetActive(true);
-            objectToSpawn.transform.position = position;
-            objectToSpawn.transform.rotation = rotation;
-        }
-        else
-        {
-            Pool pool = pools.Find(p => p.tag == tag);
-            if (pool != null)
+            if (!obj.activeInHierarchy)
             {
-                objectToSpawn = Instantiate(pool.prefab, position, rotation);
-                objectToSpawn.transform.SetParent(transform);
+                obj.SetActive(true);
+                obj.transform.position = position;
+                obj.transform.rotation = rotation;
+                return obj;
             }
         }
 
-        poolDictionary[tag].Enqueue(objectToSpawn);
-        return objectToSpawn;
+        Pool pool = pools.Find(p => p.tag == tag);
+        if (pool != null)
+        {
+            GameObject newObj = Instantiate(pool.prefab, position, rotation);
+            newObj.transform.SetParent(transform);
+            poolQueue.Enqueue(newObj);
+            return newObj;
+        }
+
+        return null;
     }
+
 
     public void ReturnToPool(GameObject obj)
     {

@@ -1,10 +1,12 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Tower : MonoBehaviour
 {
     private Material material;
-
+    public UnityAction OnCollision;
+    
     public void Spawn(float height)
     {
         material = GetComponent<Renderer>().material;
@@ -17,9 +19,15 @@ public class Tower : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Knife"))
         {
+            OnCollision?.Invoke();
             //collision.gameObject.GetComponent<Rigidbody>().isKinematic = true;
             collision.gameObject.GetComponent<Knife>().threw = true;
             collision.gameObject.transform.SetParent(transform);
         }
+    }
+
+    public void RegisterOnCollision(UnityAction callback)
+    {
+        OnCollision += callback;
     }
 }

@@ -36,7 +36,7 @@ public class Knife : MonoBehaviour
     public void Undo()
     {
         rb.AddForce(new Vector3(0, 0, 10f), ForceMode.Impulse);
-        KnifeThrower.Instance.SetCurrentHeight();
+        KnifeThrower.Instance.SetCurrentHeight(-KnifeThrower.Instance.verticalStep);
         //Destroy(gameObject, 1.5f);
         //ObjectPooler.instance.ReturnToPool(gameObject);
         StartCoroutine(ReturnToPool(1.5f));
@@ -44,15 +44,15 @@ public class Knife : MonoBehaviour
 
     public void UndoNoForce()
     {
-        KnifeThrower.Instance.SetCurrentHeight();
+        KnifeThrower.Instance.SetCurrentHeight(-KnifeThrower.Instance.verticalStep);
         StartCoroutine(ReturnToPool(0f));
     }
 
     IEnumerator ReturnToPool(float time)
     {
         yield return new WaitForSeconds(time);
-        gameObject.transform.SetParent(ObjectPooler.instance.transform);
-        ObjectPooler.instance.ReturnToPool(gameObject);
+        gameObject.transform.SetParent(ObjectPooler.Instance.transform);
+        ObjectPooler.Instance.ReturnToPool(gameObject);
         rb.linearVelocity = Vector3.zero;
     }
     private void SetBoost()
@@ -67,8 +67,9 @@ public class Knife : MonoBehaviour
     public void ThrowToTarget()
     {
         Sequence seq = DOTween.Sequence();
-        seq.Append(transform.DOMoveZ(transform.position.z + 0.1f, 0.1f).SetEase(Ease.InOutCubic));
-        seq.Append(transform.DOMoveZ(1f, 0.3f).SetEase(Ease.InQuad));
+        seq.Append(rb.DOMoveZ(transform.position.z + 0.1f, 0.1f).SetEase(Ease.InOutCubic));
+        seq.Append(rb.DOMoveZ(transform.position.z, 0.2f));
+        seq.Append(rb.DOMoveZ(1f, 0.3f).SetEase(Ease.InQuad));
     }
     //private void OnCollisionEnter(Collision collision)
     //{
