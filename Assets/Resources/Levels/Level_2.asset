@@ -16,5 +16,5 @@ MonoBehaviour:
   towerHeight: 30
   spawnPosObstacle:
   - {x: -2, y: 10, z: 0.55}
-  - {x: 2, y: 20, z: 0.55}
+  - {x: -2, y: 20, z: 0.55}
   timer: 20

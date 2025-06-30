@@ -32,6 +32,9 @@ public class BallController : MonoBehaviour
             }
             else
             {
+                //KnifeThrower.Instance.isUndo = true;
+                GameManager.Instance.StartCoroutine(GameManager.Instance.SetState(GameManager.gameState.Waiting, 0f));
+                //GameManager.Instance.SetStatee(GameManager.gameState.Waiting);
                 gameObject.transform.localScale = new Vector3(1f, 1f, 0.4f);
                 Vector3 size = collision.gameObject.GetComponent<Renderer>().bounds.extents;
                 gameObject.GetComponent<Collider>().enabled = false;
@@ -39,7 +42,7 @@ public class BallController : MonoBehaviour
                 gameObject.transform.SetParent(collision.transform);
                 rb.isKinematic = true;
 
-                KnifeThrower.Instance.UndoKnives();
+                KnifeThrower.Instance.UndoKnives(3);
                 //knife.Undo();
             }
         }
@@ -47,11 +50,11 @@ public class BallController : MonoBehaviour
 
     public void Respawn(Vector3 position)
     {
-        gameObject.SetActive(true);
         gameObject.transform.SetParent(null);
         gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
         gameObject.transform.position = position;
         gameObject.GetComponent<Collider>().enabled = true;
-        GetComponent<Rigidbody>().isKinematic = false;
+        gameObject.GetComponent<Rigidbody>().isKinematic = false;
+        gameObject.SetActive(true);
     }
 }

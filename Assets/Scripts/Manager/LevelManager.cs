@@ -45,10 +45,7 @@ public class LevelManager : MonoBehaviour
 
     public void LoadLevel(int level)
     {
-        GameManager.Instance.StartCoroutine(GameManager.Instance.SetState(GameManager.gameState.onLoad, 0.2f));
-        //Debug.Log(levelDatas[level].timer);
         KnifeThrower.Instance._currentKnife = null;
-        //KnifeThrower.Instance.ResetHeight();
         if (!levelDatas.ContainsKey(level))
         {
             Debug.LogError($"Level {level} not found in levelDatas dictionary.");
@@ -60,6 +57,7 @@ public class LevelManager : MonoBehaviour
             Knife knifeScript = knife.GetComponent<Knife>();
             knifeScript.UndoNoForce();
         }
+        GameManager.Instance.StartCoroutine(GameManager.Instance.SetState(GameManager.gameState.onLoad, 0.2f));
         towerScript.Spawn(levelDatas[level].towerHeight);
         finishScript.Spawn(levelDatas[level].towerHeight);
         targetScript.Spawn(levelDatas[level].towerHeight + 0.5f);
@@ -70,10 +68,13 @@ public class LevelManager : MonoBehaviour
         //    Vector3 spawnPos = new Vector3(2, value, 0.55f);
         //    ObjectPooler.Instance.SpawnFromPool("Obstacle", spawnPos, Quaternion.Euler(0f, 0f, 0f));
         //}
-        ObstacleManager.Instance.Spawn(levelDatas[level].spawnPosObstacle);
+        if(levelDatas[level].spawnPosObstacle != null)
+        {
+            ObstacleManager.Instance.Spawn(levelDatas[level].spawnPosObstacle);
+        }
         if (ballScript != null)
         {
-            ballScript.Respawn(new Vector3(0f, 5f, 2f));
+            ballScript.Respawn(new Vector3(0f, 5.5f, 2f));
         }
         else
         {
@@ -94,10 +95,5 @@ public class LevelManager : MonoBehaviour
         currentLevel += 1;
         Data.Instance.SetLevel(currentLevel);
         LoadCurrentLevel();
-    }
-
-    void Update()
-    {
-
     }
 }

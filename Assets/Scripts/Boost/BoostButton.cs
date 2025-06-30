@@ -16,11 +16,11 @@ public class BoostButton : MonoBehaviour
     void Start()
     {
         btn = GetComponent<Button>();
-        btn.onClick.AddListener(() => LevelUp(key));
+        btn.onClick.AddListener(() => LevelUp());
         SetData();
         Data.Instance.RegisterOnChange(SetData);    
     }
-    void LevelUp(string key)
+    void LevelUp()
     {
         if (coin >= currentPrice)
         {

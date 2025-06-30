@@ -23,6 +23,7 @@ public class Tower : MonoBehaviour
             //collision.gameObject.GetComponent<Rigidbody>().isKinematic = true;
             collision.gameObject.GetComponent<Knife>().threw = true;
             collision.gameObject.transform.SetParent(transform);
+            KnifeThrower.Instance.isLoading = false;
         }
     }
 

@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   level: 3
   towerHeight: 40
-  obstacle: 3
+  spawnPosObstacle:
+  - {x: -2, y: 10, z: 0.55}
+  - {x: -2, y: 20, z: 0.55}
+  - {x: -2, y: 30, z: 0.55}
   timer: 100

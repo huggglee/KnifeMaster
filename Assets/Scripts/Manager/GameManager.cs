@@ -20,19 +20,14 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        Data.Instance.SetCoins(1000);
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;
         state = gameState.onLoad;
-        //if (LevelManager.Instance != null)
-        //{
-        //    LevelManager.Instance.DataLoaded += LevelManager.Instance.LoadCurrentLevel;
-        //}
     }
 
     void Update()
     {
-        //Debug.Log(state);
+        Debug.Log(state);
         if (state == gameState.onLoad)
         {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
@@ -42,8 +37,7 @@ public class GameManager : MonoBehaviour
                 ScreenManager.Instance.InactiveScreen("StartPanel");
             }
         }
-
-        if (state == gameState.Playing)
+        else if (state == gameState.Playing)
         {
             time -= Time.deltaTime;
 
@@ -54,7 +48,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
     public IEnumerator SetState(gameState newState, float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -85,9 +78,9 @@ public class GameManager : MonoBehaviour
                 ScreenManager.Instance.ActiveScreen("StartPanel");
                 break;
 
-            //case gameState.Waiting:
-            //    Time.timeScale = 0f;
-            //    break;
+                //case gameState.Waiting:
+                //    Time.timeScale = 0f;
+                //    break;
         }
     }
 
@@ -95,7 +88,6 @@ public class GameManager : MonoBehaviour
     {
         onWin?.Invoke();
         StartCoroutine(SetState(gameState.Waiting, 0.2f));
-        Data.Instance.SetCoins(100+Data.Instance.GetCurrentLevel()*10);
         StartCoroutine(ScreenManager.Instance.ActiveScreen("BlurPanel", 1f));
         StartCoroutine(ScreenManager.Instance.ActiveScreen("WinPanel", 1f));
         //ScreenManager.Instance.ActiveScreen("BlurPanel",0.2f);
@@ -120,7 +112,7 @@ public class GameManager : MonoBehaviour
 
     public void OnOpenMenu()
     {
-        if(state == gameState.Playing)
+        if (state == gameState.Playing)
         {
             SetPause();
         }

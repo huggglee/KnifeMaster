@@ -2,10 +2,11 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Knife : MonoBehaviour
 {
-    private float throwForce = 15f;
+    private float throwForce = 25f;
     private float forceBoost = 5f;
     private float timeBoost = 0.5f;
     public bool threw = false;
@@ -23,38 +24,48 @@ public class Knife : MonoBehaviour
         timeBoost += levelEasyFever * 0.1f;
         forceBoost += levelFeverBounce * 0.1f;
         rb = GetComponent<Rigidbody>();
-        rb.AddTorque(Vector3.forward * 3f);
+        rb.AddTorque(Vector3.forward * 4f);
 
     }
     public void Throw()
     {
+        KnifeThrower.Instance.isLoading = true;
         rb.constraints |= RigidbodyConstraints.FreezeRotation;
-        transform.rotation = Quaternion.Euler(Vector3.zero);
+        transform.rotation = Quaternion.Euler(90f, -90f, 0f);
         rb.linearVelocity = Vector3.back * throwForce;
-        Invoke("SetBoost", timeBoost);
     }
-    public void Undo()
+    public void Undo(UnityAction callback)
     {
-        rb.AddForce(new Vector3(0, 0, 10f), ForceMode.Impulse);
         KnifeThrower.Instance.SetCurrentHeight(-KnifeThrower.Instance.verticalStep);
-        //Destroy(gameObject, 1.5f);
-        //ObjectPooler.instance.ReturnToPool(gameObject);
-        StartCoroutine(ReturnToPool(1.5f));
+        transform.DOMoveZ(7f, 0.5f)
+            //.SetEase(Ease.InCubic)
+            .OnComplete(() =>
+            {
+                ReturnPool();
+                callback?.Invoke();
+            });
+
+
+        //rb.AddForce(new Vector3(0, 0, 10f), ForceMode.Impulse);
+        //StartCoroutine(ReturnToPool(1.5f));   
     }
 
     public void UndoNoForce()
     {
         KnifeThrower.Instance.SetCurrentHeight(-KnifeThrower.Instance.verticalStep);
-        StartCoroutine(ReturnToPool(0f));
+        ReturnPool();
+        //StartCoroutine(ReturnToPool(0f));
+        //this.threw = false;
     }
 
-    IEnumerator ReturnToPool(float time)
+
+    private void ReturnPool()
     {
-        yield return new WaitForSeconds(time);
         gameObject.transform.SetParent(ObjectPooler.Instance.transform);
         ObjectPooler.Instance.ReturnToPool(gameObject);
         rb.linearVelocity = Vector3.zero;
     }
+
     private void SetBoost()
     {
         isBoost = false;
@@ -69,21 +80,20 @@ public class Knife : MonoBehaviour
         Sequence seq = DOTween.Sequence();
         seq.Append(rb.DOMoveZ(transform.position.z + 0.1f, 0.1f).SetEase(Ease.InOutCubic));
         seq.Append(rb.DOMoveZ(transform.position.z, 0.2f));
-        seq.Append(rb.DOMoveZ(1f, 0.3f).SetEase(Ease.InQuad));
+        seq.Append(rb.DOMoveZ(1.5f, 0.3f).SetEase(Ease.InQuad));
     }
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Finish"))
-    //    {
-    //        //knifes = GameObject.FindGameObjectsWithTag("Knife");
-    //        //foreach (GameObject knife in knifes)
-    //        //{
-    //        //    Knife knifeScript = knife.GetComponent<Knife>();
-    //        //    knifeScript.UndonoForce();
-    //        //}
-    //        //ScreenManager.Instance.ActiveScreen("StartPanel");
-    //        GameManager.Instance.StartCoroutine(GameManager.Instance.SetState(GameManager.gameState.Win,0.3f));
-    //        //LevelManager.Instance.LoadNextLevel();
-    //    }
-    //}
+
+    public void Reset()
+    {
+        this.threw = false;
+        this.isBoost = true;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Tower"))
+        {
+            Invoke("SetBoost", timeBoost);
+        }
+    }
 }

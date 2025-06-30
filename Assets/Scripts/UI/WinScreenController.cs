@@ -1,16 +1,28 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WinScreenController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public TextMeshProUGUI coinTxt;
+    public Button claim;
     void Start()
     {
-        
+        GameManager.Instance.RegisterOnWin(SetCoin);
+        claim.onClick.AddListener(() => OnClickClaim());
+    }
+    private void SetCoin()
+    {
+        int coins = Data.Instance.GetCurrentLevel()*10 +100;
+        coinTxt.SetText(coins.ToString());
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnClickClaim()
     {
-        
+        Data.Instance.SetCoins(100 + Data.Instance.GetCurrentLevel() * 10);
+        ScreenManager.Instance.InactiveScreen("BlurPanel");
+        ScreenManager.Instance.InactiveScreen("WinPanel");
+        ScreenManager.Instance.ActiveScreen("StartPanel");
+        LevelManager.Instance.LoadNextLevel();
     }
 }

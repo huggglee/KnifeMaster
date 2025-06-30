@@ -1,9 +1,10 @@
 using DG.Tweening;
+using System;
 using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-    public Texture texture;
+    public Texture endTexture;
     public Texture startTexture;
     private Tower tower;
     private Rigidbody rb;
@@ -21,9 +22,13 @@ public class Obstacle : MonoBehaviour
     public void Init()
     {
         material.mainTexture = startTexture;
-
-        move = rb.DOMoveX(-transform.position.x, 1f)
+        if (move != null)
+        {
+            move.Kill();
+        }   
+        move = transform.DOMoveX(-transform.position.x, 1f)
                  .SetLoops(-1, LoopType.Yoyo)
+                 .SetLink(gameObject)
                  .SetEase(Ease.InOutQuad);
     }
 
@@ -37,7 +42,8 @@ public class Obstacle : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Knife"))
         {
-            KnifeThrower.Instance.UndoKnives();
+            //KnifeThrower.Instance.hasCollidedWithObstacle = true;
+            KnifeThrower.Instance.UndoKnives(3);
             gameObject.SetActive(false);
         }
     }
@@ -47,8 +53,12 @@ public class Obstacle : MonoBehaviour
         float currentHeight = KnifeThrower.Instance.GetCurrentHeight();
         if (transform.position.y < currentHeight)
         {
-            material.mainTexture = texture;
-            move.Kill();
+            material.mainTexture = endTexture;
+            if (move != null)
+            {
+                move.Kill();
+                move = null;
+            }
         }
     }
 }
