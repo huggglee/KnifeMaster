@@ -5,11 +5,11 @@ using UnityEngine.UI;
 public class WinScreenController : MonoBehaviour
 {
     public TextMeshProUGUI coinTxt;
-    public Button claim;
+    public Button claimBtn;
     void Start()
     {
         GameManager.Instance.RegisterOnWin(SetCoin);
-        claim.onClick.AddListener(() => OnClickClaim());
+        claimBtn.onClick.AddListener(() => OnClickClaim());
     }
     private void SetCoin()
     {

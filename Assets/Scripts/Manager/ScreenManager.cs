@@ -17,7 +17,7 @@ public class ScreenManager : MonoBehaviour
     }
     void Start()
     {
-        LoadData();
+        //LoadData();
         //activeScreen("Home");
     }
 

@@ -10,7 +10,6 @@ public class ScreenController : MonoBehaviour
 
     public void Inactive()
     {
-        //Debug.Log("Inactive");
         gameObject.SetActive(false);
     }
 }

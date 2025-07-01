@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -19,9 +20,14 @@ public class KnifeThrower : MonoBehaviour
     public GameObject _currentKnife;
     public UnityAction OnChangeHeight;
     public bool isLoading = false;
+    public bool hasCollidedWithObstacle = false;
+    public bool isUndo = false;
+
 
     private Queue<Knife> knivesToUndo = new Queue<Knife>();
     private float _currentHeight;
+    private bool hasReleasedTouchAfterStart = false;
+
     private void Awake()
     {
         if (Instance == null)
@@ -32,11 +38,11 @@ public class KnifeThrower : MonoBehaviour
     }
     private void Start()
     {
-        GameManager.Instance.RegisterOnWin(OnWin);
+        //GameManager.Instance.RegisterOnWin(OnWin);
     }
     void Update()
     {
-        Debug.Log(isLoading);
+        //Debug.Log(isLoading);
         //Debug.Log(_currentHeight);
         if (_currentKnife == null)
         {
@@ -44,10 +50,19 @@ public class KnifeThrower : MonoBehaviour
             Vector3 spawnPosition = new Vector3(tower.position.x, _currentHeight, 6);
             _currentKnife = SpawnKnife(spawnPosition, Quaternion.Euler(90f, -90f, 0f));
         }
-        if (GameManager.Instance.state == GameManager.gameState.Playing && isLoading == false)
+        if (GameManager.Instance.state == GameManager.gameState.Playing && !isLoading && !hasCollidedWithObstacle)
         {
+            if (!hasReleasedTouchAfterStart)
+            {
+                if (Input.touchCount == 0)
+                {
+                    hasReleasedTouchAfterStart = true;
+                }
+                return;
+            }
             if (_currentKnife.transform.position.y <= tower.transform.localScale.y)
             {
+
                 if (Input.touchCount > 0)
                 {
                     Touch touch = Input.GetTouch(0);
@@ -55,7 +70,6 @@ public class KnifeThrower : MonoBehaviour
                     {
                         if (_currentKnife.transform.position.y == tower.transform.localScale.y)
                         {
-                            GameObject ball = GameObject.FindGameObjectWithTag("Ball");
                             ball.SetActive(false);
                         }
                         _currentKnife.GetComponent<Knife>().Throw();
@@ -67,12 +81,22 @@ public class KnifeThrower : MonoBehaviour
             }
         }
     }
-
-    public void OnWin()
+    public void OnGameStart()
     {
-        _currentKnife.GetComponent<Knife>().ThrowToTarget();
-        LatestKnife = _currentKnife.GetComponent<Knife>();
+        hasReleasedTouchAfterStart = false;
     }
+
+    public void ResetState()
+    {
+        isLoading = false;
+        hasCollidedWithObstacle = false;
+        isUndo = false;
+    }
+    //public void OnWin()
+    //{
+    //    _currentKnife.GetComponent<Knife>().ThrowToTarget();
+    //    //LatestKnife = _currentKnife.GetComponent<Knife>();
+    //}
 
     public void SetCurrentHeight(float step)
     {
@@ -83,6 +107,11 @@ public class KnifeThrower : MonoBehaviour
     public float GetCurrentHeight()
     {
         return _currentHeight;
+    }
+
+    public void ResetCurrentHeight()
+    {
+        _currentHeight = 0;
     }
 
     public void RegisterOnChangeHeight(UnityAction callback)
@@ -102,24 +131,25 @@ public class KnifeThrower : MonoBehaviour
     }
     private IEnumerator UndoKnivesCoroutine(int numberOfKnives)
     {
-        yield return new WaitForSeconds(0.5f);
-        if (_currentKnife != null)
-            _currentKnife.SetActive(false);
-        _currentHeight += verticalStep;
-        if (LatestKnife != null)
-            knivesToUndo.Enqueue(LatestKnife);
-
-        int count = tower.childCount;
-        int startIndex = Mathf.Max(0, count - numberOfKnives);
-
-        for (int i = count - 1; i >= startIndex; i--)
+        Debug.Log("cbi undo");
+        if (!isUndo)
         {
-            Transform child = tower.GetChild(i);
-            Knife knife = child.GetComponent<Knife>();
-            if (knife != null)
-                knivesToUndo.Enqueue(knife);
+            Debug.Log("undo");
+            yield return new WaitForSeconds(0.7f);
+            if (_currentKnife != null)
+                _currentKnife.SetActive(false);
+            int count = tower.childCount;
+            int startIndex = Mathf.Max(0, count - numberOfKnives);
+
+            for (int i = count - 1; i >= startIndex; i--)
+            {
+                Transform child = tower.GetChild(i);
+                Knife knife = child.GetComponent<Knife>();
+                if (knife != null)
+                    knivesToUndo.Enqueue(knife);
+            }
+            UndoNextKnife();
         }
-        UndoNextKnife();
     }
     private void UndoNextKnife()
     {
@@ -146,10 +176,13 @@ public class KnifeThrower : MonoBehaviour
             _currentKnife.SetActive(true);
         }
 
-        Vector3 BallPosition = new Vector3(0f, _currentHeight + 5f, 2f);
-        GameManager.Instance.StartCoroutine(GameManager.Instance.SetState(GameManager.gameState.Playing, 0.2f));
-        ball.GetComponent<BallController>().Respawn(BallPosition);
-
-        isLoading = false;
+        if (ball.transform.parent)
+        {
+            Vector3 BallPosition = new Vector3(0f, _currentHeight + 5f, 2f);
+            //GameManager.Instance.StartCoroutine(GameManager.Instance.SetState(GameManager.gameState.Playing, 0.2f));
+            ball.GetComponent<BallController>().Respawn(BallPosition);
+        }
+        GameManager.Instance.SetState(GameManager.gameState.Playing);
+        ResetState();
     }
 }

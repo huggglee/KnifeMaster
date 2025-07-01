@@ -37,6 +37,7 @@ public class LevelManager : MonoBehaviour
 
     public void LoadData()
     {
+        ScreenManager.Instance.LoadData();
         List<LevelData> leveldatas = Resources.LoadAll<LevelData>(levelPath).ToList();
         levelDatas = leveldatas.ToDictionary(i => i.level);
         Debug.Log("loaddata");
@@ -45,7 +46,10 @@ public class LevelManager : MonoBehaviour
 
     public void LoadLevel(int level)
     {
+        GameManager.Instance.SetState(GameManager.gameState.onLoad);
+        KnifeThrower.Instance.ResetState();
         KnifeThrower.Instance._currentKnife = null;
+        KnifeThrower.Instance.ResetCurrentHeight();
         if (!levelDatas.ContainsKey(level))
         {
             Debug.LogError($"Level {level} not found in levelDatas dictionary.");
@@ -55,9 +59,9 @@ public class LevelManager : MonoBehaviour
         foreach (GameObject knife in knifes)
         {
             Knife knifeScript = knife.GetComponent<Knife>();
-            knifeScript.UndoNoForce();
+            knifeScript.ReturnPool();
         }
-        GameManager.Instance.StartCoroutine(GameManager.Instance.SetState(GameManager.gameState.onLoad, 0.2f));
+        //GameManager.Instance.StartCoroutine(GameManager.Instance.SetState(GameManager.gameState.onLoad, 0.2f));
         towerScript.Spawn(levelDatas[level].towerHeight);
         finishScript.Spawn(levelDatas[level].towerHeight);
         targetScript.Spawn(levelDatas[level].towerHeight + 0.5f);

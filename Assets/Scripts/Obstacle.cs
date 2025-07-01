@@ -42,8 +42,10 @@ public class Obstacle : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Knife"))
         {
-            //KnifeThrower.Instance.hasCollidedWithObstacle = true;
+            GameManager.Instance.SetState(GameManager.gameState.Waiting);
+            KnifeThrower.Instance.hasCollidedWithObstacle = true;
             KnifeThrower.Instance.UndoKnives(3);
+            KnifeThrower.Instance.isUndo = true;
             gameObject.SetActive(false);
         }
     }

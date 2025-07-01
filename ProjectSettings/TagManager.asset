@@ -9,6 +9,7 @@ TagManager:
   - Knife
   - StaticKnife
   - Obstacle
+  - Target
   layers:
   - Default
   - TransparentFX

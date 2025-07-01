@@ -964,55 +964,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 221093145}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 283976086}
-        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
-        m_MethodName: LoadCurrentLevel
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1054891400}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: SetOnLoad
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2011739511}
-        m_TargetAssemblyTypeName: ScreenManager, Assembly-CSharp
-        m_MethodName: InactiveScreen
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: MenuPanel
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2011739511}
-        m_TargetAssemblyTypeName: ScreenManager, Assembly-CSharp
-        m_MethodName: InactiveScreen
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: BlurPanel
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &221093145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2435,7 +2387,6 @@ GameObject:
   - component: {fileID: 645995891}
   - component: {fileID: 645995890}
   - component: {fileID: 645995889}
-  - component: {fileID: 645995893}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2532,20 +2483,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &645995893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 645995888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df841697fd3795f4288327c8c06e21de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  coin_txt: {fileID: 947342089}
-  level_txt: {fileID: 478898795}
 --- !u!1 &761178643
 GameObject:
   m_ObjectHideFlags: 0
@@ -2696,7 +2633,6 @@ GameObject:
   - component: {fileID: 822984721}
   - component: {fileID: 822984720}
   - component: {fileID: 822984719}
-  - component: {fileID: 822984722}
   m_Layer: 5
   m_Name: Menu_Btn
   m_TagString: Untagged
@@ -2766,43 +2702,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 822984720}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2011739511}
-        m_TargetAssemblyTypeName: ScreenManager, Assembly-CSharp
-        m_MethodName: ActiveScreen
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: BlurPanel
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2011739511}
-        m_TargetAssemblyTypeName: ScreenManager, Assembly-CSharp
-        m_MethodName: ActiveScreen
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: MenuPanel
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1054891400}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: OnOpenMenu
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &822984720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2841,19 +2741,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 822984717}
   m_CullTransparentMesh: 1
---- !u!114 &822984722
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 822984717}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8e1a79c07391d847af9e8308d897089, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  key: M
 --- !u!1 &832914452
 GameObject:
   m_ObjectHideFlags: 0
@@ -3022,43 +2909,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 854795483}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1054891400}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: OnCloseMenu
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2011739511}
-        m_TargetAssemblyTypeName: ScreenManager, Assembly-CSharp
-        m_MethodName: InactiveScreen
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: MenuPanel
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2011739511}
-        m_TargetAssemblyTypeName: ScreenManager, Assembly-CSharp
-        m_MethodName: InactiveScreen
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: BlurPanel
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &854795483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5155,6 +5006,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Target
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8d19dd1ed7b8ade4d890c4a2cb487138, type: 3}
+      propertyPath: m_TagString
+      value: Target
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6210,6 +6065,9 @@ MonoBehaviour:
   throwForce: 10
   knife: {fileID: 1521735269}
   _currentKnife: {fileID: 0}
+  isLoading: 0
+  hasCollidedWithObstacle: 0
+  isUndo: 0
 --- !u!1 &1953741575
 GameObject:
   m_ObjectHideFlags: 0
@@ -6464,6 +6322,8 @@ GameObject:
   - component: {fileID: 2011739511}
   - component: {fileID: 2011739513}
   - component: {fileID: 2011739514}
+  - component: {fileID: 2011739515}
+  - component: {fileID: 2011739516}
   m_Layer: 0
   m_Name: ScreenManager
   m_TagString: Untagged
@@ -6512,7 +6372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinTxt: {fileID: 1609158187}
-  claim: {fileID: 453103876}
+  claimBtn: {fileID: 453103876}
 --- !u!114 &2011739514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6526,6 +6386,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restartBtn: {fileID: 1222695324}
+--- !u!114 &2011739515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011739510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b18d7368ccd65b4b9f5e9b69fa56845, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turnoffBtn: {fileID: 854795482}
+  restartBtn: {fileID: 221093144}
+--- !u!114 &2011739516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011739510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df841697fd3795f4288327c8c06e21de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coin_txt: {fileID: 947342089}
+  level_txt: {fileID: 478898795}
+  menuBtn: {fileID: 822984719}
 --- !u!1 &2117113783
 GameObject:
   m_ObjectHideFlags: 0

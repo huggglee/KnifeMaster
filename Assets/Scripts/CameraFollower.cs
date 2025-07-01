@@ -52,12 +52,10 @@ public class CameraFollower : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, targetPos, followSpeed * Time.deltaTime);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, followSpeed * Time.deltaTime);
     }
-
     public void ZoomIn()
     {
         targetFOV = minFOV;
     }
-
     public void ZoomOut()
     {
         targetFOV = maxFOV;
