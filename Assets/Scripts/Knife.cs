@@ -74,17 +74,17 @@ public class Knife : MonoBehaviour
         return forceBoost;
     }
 
-    public void ThrowToTarget()
+    public void ThrowToTarget(Transform target)
     {
         rb.constraints |= RigidbodyConstraints.FreezeRotation;
         transform.rotation = Quaternion.Euler(90f, -90f, 0f);
         Sequence seq = DOTween.Sequence();
         seq.Append(rb.DOMoveZ(transform.position.z + 0.1f, 0.1f).SetEase(Ease.InOutCubic));
         seq.Append(rb.DOMoveZ(transform.position.z, 0.2f));
-        seq.Append(rb.DOMoveZ(1.5f, 0.3f).SetEase(Ease.InQuad));
+        seq.Append(rb.DOMoveZ(target.position.z + 2.2f, 0.3f).SetEase(Ease.InQuad));
         seq.OnComplete(() =>
         {
-            Debug.Log("win");
+            target.GetComponent<Target>().PlayEffect();
             GameManager.Instance.SetState(GameManager.gameState.Win);
         });
     }
@@ -100,6 +100,6 @@ public class Knife : MonoBehaviour
         if (collision.gameObject.CompareTag("Tower"))
         {
             Invoke("SetBoost", timeBoost);
-        } 
+        }
     }
 }

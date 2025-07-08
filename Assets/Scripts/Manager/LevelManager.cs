@@ -85,8 +85,6 @@ public class LevelManager : MonoBehaviour
             Debug.LogError("ballScript is null. Please assign it in the inspector or initialize it in the code.");
         }
         GameManager.Instance.time = levelDatas[level].timer;
-        //Debug.Log(GameManager.Instance.time);
-
     }
     public void LoadCurrentLevel()
     {

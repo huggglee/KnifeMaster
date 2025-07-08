@@ -23,7 +23,7 @@ public class KnifeThrower : MonoBehaviour
     public bool hasCollidedWithObstacle = false;
     public bool isUndo = false;
 
-
+    private Coroutine undoCoroutine;
     private Queue<Knife> knivesToUndo = new Queue<Knife>();
     private float _currentHeight;
     private bool hasReleasedTouchAfterStart = false;
@@ -50,7 +50,7 @@ public class KnifeThrower : MonoBehaviour
             Vector3 spawnPosition = new Vector3(tower.position.x, _currentHeight, 6);
             _currentKnife = SpawnKnife(spawnPosition, Quaternion.Euler(90f, -90f, 0f));
         }
-        if (GameManager.Instance.state == GameManager.gameState.Playing && !isLoading && !hasCollidedWithObstacle)
+        if (GameManager.Instance.state == GameManager.gameState.Playing && !isLoading && !hasCollidedWithObstacle && !isUndo)
         {
             if (!hasReleasedTouchAfterStart)
             {
@@ -81,6 +81,7 @@ public class KnifeThrower : MonoBehaviour
             }
         }
     }
+
     public void OnGameStart()
     {
         hasReleasedTouchAfterStart = false;
@@ -88,9 +89,15 @@ public class KnifeThrower : MonoBehaviour
 
     public void ResetState()
     {
+        if (undoCoroutine != null)
+        {
+            StopCoroutine(undoCoroutine);
+            undoCoroutine = null;
+        }
         isLoading = false;
         hasCollidedWithObstacle = false;
         isUndo = false;
+        knivesToUndo.Clear();
     }
     //public void OnWin()
     //{
@@ -111,6 +118,7 @@ public class KnifeThrower : MonoBehaviour
 
     public void ResetCurrentHeight()
     {
+        knivesToUndo.Clear();
         _currentHeight = 0;
     }
 
@@ -127,15 +135,19 @@ public class KnifeThrower : MonoBehaviour
     }
     public void UndoKnives(int numberOfKnives)
     {
-        StartCoroutine(UndoKnivesCoroutine(3));
+        if (undoCoroutine != null)
+        {
+            StopCoroutine(undoCoroutine);
+            undoCoroutine = null;
+        }
+        undoCoroutine = StartCoroutine(UndoKnivesCoroutine(3));
     }
     private IEnumerator UndoKnivesCoroutine(int numberOfKnives)
     {
-        Debug.Log("cbi undo");
-        if (!isUndo)
-        {
-            Debug.Log("undo");
-            yield return new WaitForSeconds(0.7f);
+        knivesToUndo.Clear();
+        //if (!isUndo)
+        //{
+            yield return new WaitForSeconds(0.5f);
             if (_currentKnife != null)
                 _currentKnife.SetActive(false);
             int count = tower.childCount;
@@ -149,7 +161,7 @@ public class KnifeThrower : MonoBehaviour
                     knivesToUndo.Enqueue(knife);
             }
             UndoNextKnife();
-        }
+        //}
     }
     private void UndoNextKnife()
     {
@@ -182,7 +194,7 @@ public class KnifeThrower : MonoBehaviour
             //GameManager.Instance.StartCoroutine(GameManager.Instance.SetState(GameManager.gameState.Playing, 0.2f));
             ball.GetComponent<BallController>().Respawn(BallPosition);
         }
-        GameManager.Instance.SetState(GameManager.gameState.Playing);
+        //GameManager.Instance.SetState(GameManager.gameState.Playing);
         ResetState();
     }
 }

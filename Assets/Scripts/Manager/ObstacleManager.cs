@@ -63,6 +63,7 @@ public class ObstacleManager : MonoBehaviour
         {
             Vector3 spawnPos = spawnPosition[i];
             GameObject obstacleObj = ObjectPooler.Instance.SpawnFromPool("Obstacle", spawnPos, Quaternion.identity);
+            obstacleObj.GetComponent<Collider>().enabled = true;
             Obstacle obstacleScript = obstacleObj.GetComponent<Obstacle>();
             obstacleScript.Init();
         }

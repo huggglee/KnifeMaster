@@ -11,7 +11,7 @@ public class Obstacle : MonoBehaviour
     private Tween move;
     private Material material;
 
-    void Awake() 
+    void Awake()
     {
         tower = GameObject.FindGameObjectWithTag("Tower").GetComponent<Tower>();
         material = GetComponent<Renderer>().material;
@@ -25,7 +25,7 @@ public class Obstacle : MonoBehaviour
         if (move != null)
         {
             move.Kill();
-        }   
+        }
         move = transform.DOMoveX(-transform.position.x, 1f)
                  .SetLoops(-1, LoopType.Yoyo)
                  .SetLink(gameObject)
@@ -42,10 +42,11 @@ public class Obstacle : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Knife"))
         {
-            GameManager.Instance.SetState(GameManager.gameState.Waiting);
+            //GameManager.Instance.SetState(GameManager.gameState.Waiting);
             KnifeThrower.Instance.hasCollidedWithObstacle = true;
             KnifeThrower.Instance.UndoKnives(3);
             KnifeThrower.Instance.isUndo = true;
+            gameObject.GetComponent<Collider>().enabled = false;
             gameObject.SetActive(false);
         }
     }
