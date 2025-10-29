@@ -40,7 +40,7 @@ public class LevelManager : MonoBehaviour
         ScreenManager.Instance.LoadData();
         List<LevelData> leveldatas = Resources.LoadAll<LevelData>(levelPath).ToList();
         levelDatas = leveldatas.ToDictionary(i => i.level);
-        Debug.Log("loaddata");
+        //Debug.Log("loaddata");
         DataLoaded?.Invoke();
     }
 

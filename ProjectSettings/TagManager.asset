@@ -10,6 +10,8 @@ TagManager:
   - StaticKnife
   - Obstacle
   - Target
+  - KunaiKnife
+  - SurvivalKnife
   layers:
   - Default
   - TransparentFX

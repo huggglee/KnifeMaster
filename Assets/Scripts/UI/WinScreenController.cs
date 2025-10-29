@@ -20,9 +20,9 @@ public class WinScreenController : MonoBehaviour
     private void OnClickClaim()
     {
         Data.Instance.SetCoins(100 + Data.Instance.GetCurrentLevel() * 10);
-        ScreenManager.Instance.InactiveScreen("BlurPanel");
-        ScreenManager.Instance.InactiveScreen("WinPanel");
-        ScreenManager.Instance.ActiveScreen("StartPanel");
+        //ScreenManager.Instance.InactiveScreen("BlurPanel");
+        ScreenManager.Instance.InactiveScreen("WinScreen");
+        ScreenManager.Instance.ActiveScreen("StartScreen");
         LevelManager.Instance.LoadNextLevel();
     }
 }

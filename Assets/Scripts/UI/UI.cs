@@ -7,6 +7,7 @@ public class UI : MonoBehaviour
     public TextMeshProUGUI coin_txt;
     public TextMeshProUGUI level_txt;
     public Button menuBtn;
+    public Button knifeSkinBtn;
     void Start()
     {
         SetCoins();
@@ -14,6 +15,7 @@ public class UI : MonoBehaviour
         Data.Instance.RegisterOnChange(SetCoins);
         Data.Instance.RegisterOnChange(SetLevelText);
         menuBtn.onClick.AddListener(() => OnClickMenu());
+        knifeSkinBtn.onClick.AddListener(() => OnClickKnifeSkin());
     }
 
     
@@ -32,8 +34,14 @@ public class UI : MonoBehaviour
     }
     void OnClickMenu()
     {
-        ScreenManager.Instance.ActiveScreen("MenuPanel");
-        ScreenManager.Instance.ActiveScreen("BlurPanel");
+        ScreenManager.Instance.ActiveScreen("MenuScreen");
+        //ScreenManager.Instance.ActiveScreen("BlurPanel");
         GameManager.Instance.OnOpenMenu();
+    }
+
+    void OnClickKnifeSkin()
+    {
+        ScreenManager.Instance.InactiveScreen("StartScreen");
+        ScreenManager.Instance.ActiveScreen("ChooseSkinScreen");
     }
 }

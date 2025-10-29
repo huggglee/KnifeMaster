@@ -25,13 +25,28 @@ public class Knife : MonoBehaviour
         forceBoost += levelFeverBounce * 0.1f;
         rb = GetComponent<Rigidbody>();
         rb.AddTorque(Vector3.forward * 4f);
+    }
 
+    public void ChangeSkin(string tag)
+    {
+        foreach (Transform child in gameObject.transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+
+        foreach (Transform child in gameObject.transform)
+        {
+            if (child.CompareTag(tag))
+            {
+                child.gameObject.SetActive(true);
+            }
+        }
     }
     public void Throw()
     {
         KnifeThrower.Instance.isLoading = true;
         rb.constraints |= RigidbodyConstraints.FreezeRotation;
-        transform.rotation = Quaternion.Euler(90f, -90f, 0f);
+        transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         rb.linearVelocity = Vector3.back * throwForce;
     }
     public void Undo(UnityAction callback)

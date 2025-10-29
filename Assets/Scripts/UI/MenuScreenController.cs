@@ -12,14 +12,14 @@ public class MenuScreenController : MonoBehaviour
     }
     private void OnClickRestart()
     {
-        ScreenManager.Instance.InactiveScreen("MenuPanel");
-        ScreenManager.Instance.InactiveScreen("BlurPanel");
+        ScreenManager.Instance.InactiveScreen("MenuScreen");
+        //ScreenManager.Instance.InactiveScreen("BlurPanel");
         LevelManager.Instance.LoadCurrentLevel();
     }
     private void OnClickTurnoff()
     {
         GameManager.Instance.OnCloseMenu();
-        ScreenManager.Instance.InactiveScreen("MenuPanel");
-        ScreenManager.Instance.InactiveScreen("BlurPanel");
+        ScreenManager.Instance.InactiveScreen("MenuScreen");
+        //ScreenManager.Instance.InactiveScreen("BlurPanel");
     }
 }

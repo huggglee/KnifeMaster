@@ -35,9 +35,10 @@ public class BallController : MonoBehaviour
                 //GameManager.Instance.StartCoroutine(GameManager.Instance.SetState(GameManager.gameState.Waiting, 0f));
                 //GameManager.Instance.SetState(GameManager.gameState.Waiting);
                 gameObject.transform.localScale = new Vector3(1f, 1f, 0.4f);
-                Vector3 size = collision.gameObject.GetComponent<Renderer>().bounds.extents;
+                //Vector3 size = collision.gameObject.GetComponent<Renderer>().bounds.extents;
                 gameObject.GetComponent<Collider>().enabled = false;
-                gameObject.transform.position = collision.transform.position - new Vector3(0f, 0f, size.z);
+                //gameObject.transform.position = collision.transform.position - new Vector3(0f, 0f, size.z);
+                gameObject.transform.position = new Vector3(gameObject.transform.position.x, collision.transform.position.y,gameObject.transform.position.z);
                 gameObject.transform.SetParent(collision.transform);
                 rb.isKinematic = true;
 

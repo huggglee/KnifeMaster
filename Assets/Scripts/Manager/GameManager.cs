@@ -26,13 +26,14 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        //Debug.Log(PlayerPrefs.GetInt("SelectedKnifeSkin"));
         //Debug.Log(state);
         if (state == gameState.onLoad)
         {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 Debug.Log("Start Game");
-                ScreenManager.Instance.InactiveScreen("StartPanel");
+                ScreenManager.Instance.InactiveScreen("StartScreen");
                 //StartCoroutine(SetState(gameState.Playing, 0.3f));
                 SetState(gameState.Playing);
             }
@@ -58,7 +59,7 @@ public class GameManager : MonoBehaviour
         {
             case gameState.Playing:
                 Time.timeScale = 1f;
-                ScreenManager.Instance.ActiveScreen("TimerPanel");
+                ScreenManager.Instance.ActiveScreen("TimerScreen");
                 KnifeThrower.Instance.OnGameStart();
                 break;
 
@@ -76,8 +77,8 @@ public class GameManager : MonoBehaviour
 
             case gameState.onLoad:
                 Time.timeScale = 1f;
-                ScreenManager.Instance.InactiveScreen("TimerPanel");
-                ScreenManager.Instance.ActiveScreen("StartPanel");
+                ScreenManager.Instance.InactiveScreen("TimerScreen");
+                ScreenManager.Instance.ActiveScreen("StartScreen");
                 break;
 
                 //case gameState.Waiting:
@@ -126,8 +127,8 @@ public class GameManager : MonoBehaviour
         onWin?.Invoke();
         //StartCoroutine(SetState(gameState.Waiting, 0.2f));
         SetState(gameState.Waiting);
-        StartCoroutine(ScreenManager.Instance.ActiveScreen("BlurPanel", 1f));
-        StartCoroutine(ScreenManager.Instance.ActiveScreen("WinPanel", 1f));
+        //StartCoroutine(ScreenManager.Instance.ActiveScreen("BlurPanel", 1f));
+        StartCoroutine(ScreenManager.Instance.ActiveScreen("WinScreen", 1f));
         //ScreenManager.Instance.ActiveScreen("BlurPanel",0.2f);
         //ScreenManager.Instance.ActiveScreen("WinPanel",0.2f);
     }
@@ -135,8 +136,8 @@ public class GameManager : MonoBehaviour
     {
         //StartCoroutine(SetState(gameState.Waiting, 0f));
         SetState(gameState.Waiting);
-        ScreenManager.Instance.ActiveScreen("BlurPanel");
-        ScreenManager.Instance.ActiveScreen("LosePanel");
+        //ScreenManager.Instance.ActiveScreen("BlurPanel");
+        ScreenManager.Instance.ActiveScreen("LoseScreen");
     }
 
 

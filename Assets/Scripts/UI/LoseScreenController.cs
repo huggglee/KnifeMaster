@@ -11,9 +11,9 @@ public class LoseScreen : MonoBehaviour
     }
     private void OnClickRestart()
     {
-        ScreenManager.Instance.InactiveScreen("LosePanel");
-        ScreenManager.Instance.InactiveScreen("BlurPanel");
-        ScreenManager.Instance.ActiveScreen("StartPanel");
+        ScreenManager.Instance.InactiveScreen("LoseScreen");
+        //ScreenManager.Instance.InactiveScreen("BlurPanel");
+        ScreenManager.Instance.ActiveScreen("StartScreen");
         LevelManager.Instance.LoadCurrentLevel();
     }
 }

@@ -39,16 +39,16 @@ public class KnifeThrower : MonoBehaviour
     private void Start()
     {
         //GameManager.Instance.RegisterOnWin(OnWin);
+        ChangeSkin(PlayerPrefs.GetString("SelectedKnifeSkin"));
     }
     void Update()
     {
-        //Debug.Log(isLoading);
-        //Debug.Log(_currentHeight);
         if (_currentKnife == null)
         {
             SetCurrentHeight(verticalStep);
             Vector3 spawnPosition = new Vector3(tower.position.x, _currentHeight, 6);
-            _currentKnife = SpawnKnife(spawnPosition, Quaternion.Euler(90f, -90f, 0f));
+            _currentKnife = SpawnKnife(spawnPosition, Quaternion.identity, "KunaiKnife");
+            //_currentKnife = SpawnKnife(spawnPosition, Quaternion.Euler(90f, -90f, 0f));
         }
         if (GameManager.Instance.state == GameManager.gameState.Playing && !isLoading && !hasCollidedWithObstacle && !isUndo)
         {
@@ -82,6 +82,15 @@ public class KnifeThrower : MonoBehaviour
         }
     }
 
+    public void ChangeSkin(string tag)
+    {
+        GameObject staticKnife = GameObject.FindGameObjectWithTag("StaticKnife");
+        staticKnife.GetComponent<Knife>().ChangeSkin(tag);
+        if (_currentKnife)
+        {
+        _currentKnife.GetComponent<Knife>().ChangeSkin(tag);
+        }
+    }
     public void OnGameStart()
     {
         hasReleasedTouchAfterStart = false;
@@ -127,12 +136,25 @@ public class KnifeThrower : MonoBehaviour
         OnChangeHeight += callback;
     }
 
-    public GameObject SpawnKnife(Vector3 position, Quaternion rotation, string tag = "Knife")
+    public GameObject SpawnKnife(Vector3 position, Quaternion rotation,string skin, string tag = "Knife")
     {
         GameObject gameObject = ObjectPooler.Instance.SpawnFromPool(tag, position, rotation);
         gameObject.GetComponent<Knife>().Reset();
+        gameObject.GetComponent<Knife>().ChangeSkin(PlayerPrefs.GetString("SelectedKnifeSkin"));
         return gameObject;
     }
+    //public GameObject SpawnKnife(Vector3 position, Quaternion rotation, int index, string tag = "Knife")
+    //{
+    //    GameObject gameObject = ObjectPooler.Instance.SpawnFromPool(tag, position, rotation);
+    //    foreach (Transform children in gameObject.transform)
+    //    {
+    //        children.gameObject.SetActive(false);
+    //    }
+    //    Transform child = gameObject.transform.GetChild(index);
+    //    child.GetComponent<Knife>().Reset();
+    //    child.gameObject.SetActive(true);
+    //    return child.gameObject;
+    //}
     public void UndoKnives(int numberOfKnives)
     {
         if (undoCoroutine != null)
